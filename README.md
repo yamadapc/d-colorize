@@ -3,7 +3,7 @@ d-colorize
 
 __THIS MODULE HASN'T BEEN PUBLISHED YET__
 
-# Usage
+## Usage
 ```d
 import std.stdio;
 import colorize;
@@ -14,11 +14,11 @@ void main()
 }
 ```
 
-# `colorize(string str, fg c, bg b=bg.init, mode m=mode.init)`
+#### `colorize(string str, fg c, bg b=bg.init, mode m=mode.init)`
 
 Wraps a string around color escape sequences.
 
-## Params
+### Params
 * str = The string to wrap with colors and modes
 * c   = The foreground color (see the fg enum type)
 * b   = The background color (see the bg enum type)
@@ -30,8 +30,8 @@ Wraps a string around color escape sequences.
 colorize("This is red over green blinking", fg.blue, bg.green, mode.blink)
 ```
 
-# Available colors and modes
-## `fg` enum type (Foreground colors)
+## Available colors and modes
+### `fg` enum type (Foreground colors)
 Foreground text colors are available through the `fg` enum. Currently available
 colors are:
 - `fg.init` (39)
@@ -52,12 +52,12 @@ colors are:
 - `fg.light\_cyan` (96)
 - `fg.light\_white` (97)
 
-## `bg` enum type (Background colors)
+### `bg` enum type (Background colors)
 Background colors are available with the same names through the `bg` enum. This
 is because background colors come with an offset of 10 to their foreground
 counterparts and we wanted to avoid calculating the offset at runtime.
 
-## `mode` enum type (Text modes)
+### `mode` enum type (Text modes)
 Text modes are available through the `mode` enum. Currently available text modes
 are:
 - `mode.init` (0)
