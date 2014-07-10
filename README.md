@@ -8,7 +8,8 @@ To put it simply, this is a simple helper for printing colored output to a
 terminal.
 
 ## Installing
-This package is registered in the dub registry as colorize.
+This package is registered in the dub registry as
+[colorize](http://code.dlang.org/packages/colorize).
 
 ## Usage
 ```d
