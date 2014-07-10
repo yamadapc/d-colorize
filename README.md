@@ -1,7 +1,14 @@
 d-colorize
 ====================
 
-__THIS MODULE HASN'T BEEN PUBLISHED YET__
+A partial port of Ruby's [colorize](https://github.com/fazibear/colorize)
+library to D.
+
+To put it simply, this is a simple helper for printing colored output to a
+terminal.
+
+## Installing
+This package is registered in the dub registry as colorize.
 
 ## Usage
 ```d
