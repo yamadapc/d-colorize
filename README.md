@@ -1,5 +1,7 @@
 d-colorize
 ====================
+[![Build Status](https://travis-ci.org/yamadapc/d-colorize.svg?branch=master)](https://travis-ci.org/yamadapc/d-colorize)
+- - -
 
 A partial port of Ruby's [colorize](https://github.com/fazibear/colorize)
 library to D.
