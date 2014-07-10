@@ -1,5 +1,13 @@
+/**
+ * Authors: Pedro Tacla Yamada
+ * Date: June 9, 2014
+ * License: Licensed under the MIT license. See LICENSE for more information
+ * Version: 0.0.1
+ */
+
 import std.string : format;
 
+// Foreground colors
 static enum fg : int
 {
   init = 39,
@@ -23,6 +31,7 @@ static enum fg : int
   light_white   = 97
 }
 
+// Background colors
 static enum bg : int
 {
   init = 49,
@@ -46,6 +55,7 @@ static enum bg : int
   light_white   = 107
 }
 
+// Text modes
 static enum mode : int
 {
   init      = 0,
@@ -56,6 +66,22 @@ static enum mode : int
   hide      = 8
 }
 
+/**
+ * Wraps a string around color escape sequences.
+ *
+ * Params:
+ *   str = The string to wrap with colors and modes
+ *   c   = The foreground color (see the fg enum type)
+ *   b   = The background color (see the bg enum type)
+ *   m   = The text mode        (see the mode enum type)
+ * Example:
+ * ---
+ * writeln("This is blue".colorize(fg.blue));
+ * writeln(
+ *   colorize("This is red over green blinking", fg.blue, bg.green, mode.blink)
+ * );
+ * ---
+ */
 
 string colorize(string str, fg c, bg b=bg.init, mode m=mode.init)
   pure
