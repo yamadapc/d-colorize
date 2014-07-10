@@ -1,6 +1,7 @@
 {
   "name": "colorize",
   "description": "A port of Ruby's colorize library to D.",
+  "version": "0.0.1",
   "copyright": "Copyright © 2014, Pedro Tacla Yamada",
   "authors": [
     "Pedro Tacla Yamada"
