@@ -83,7 +83,7 @@ static enum mode : int
  * ---
  */
 
-string colorize(string str, fg c, bg b=bg.init, mode m=mode.init)
+string colorize(string str, fg c=fg.init, bg b=bg.init, mode m=mode.init)
   pure
 {
   return format("\033[%d;%d;%dm%s\033[0m", m, c, b, str);
@@ -109,4 +109,19 @@ unittest
   ret = "This is red on blue blinking".colorize(fg.red, bg.blue, mode.blink);
   writeln(ret);
   assert(ret == "\033[5;31;44mThis is red on blue blinking\033[0m");
+}
+
+string background(string str, bg b=bg.init)
+{
+  return colorize(str, fg.init, b, mode.init);
+}
+
+string foreground(string str, fg c=fg.init)
+{
+  return colorize(str, c, bg.init, mode.init);
+}
+
+string style(string str, mode m=mode.init)
+{
+  return colorize(str, fg.init, bg.init, m);
 }
