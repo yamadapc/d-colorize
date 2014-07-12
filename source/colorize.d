@@ -83,8 +83,12 @@ static enum mode : int
  * ---
  */
 
-string colorize(string str, fg c=fg.init, bg b=bg.init, mode m=mode.init)
-  pure
+string colorize(
+  const string str,
+  const fg c=fg.init,
+  const bg b=bg.init,
+  const mode m=mode.init
+) pure
 {
   return format("\033[%d;%d;%dm%s\033[0m", m, c, b, str);
 }
