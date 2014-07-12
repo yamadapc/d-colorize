@@ -115,17 +115,31 @@ unittest
   assert(ret == "\033[5;31;44mThis is red on blue blinking\033[0m");
 }
 
-string background(string str, bg b=bg.init)
+string background(const string str, const bg b=bg.init)
 {
-  return colorize(str, fg.init, b, mode.init);
+  return format("\033[%dm%s\033[0m", b, str);
 }
 
-string foreground(string str, fg c=fg.init)
+string foreground(const string str, const fg c=fg.init)
 {
-  return colorize(str, c, bg.init, mode.init);
+  return format("\033[%dm%s\033[0m", c, str);
 }
 
-string style(string str, mode m=mode.init)
+string style(const string str, const mode m=mode.init)
 {
-  return colorize(str, fg.init, bg.init, m);
+  return format("\033[%dm%s\033[0m", m, str);
+}
+
+unittest
+{
+  import std.stdio;
+  string ret;
+
+  ret = "This is red on blue blinking"
+    .foreground(fg.red)
+    .background(bg.blue)
+    .style(mode.blink);
+
+  writeln(ret);
+  assert(ret == "\033[5m\033[44m\033[31mThis is red on blue blinking\033[0m\033[0m\033[0m");
 }
