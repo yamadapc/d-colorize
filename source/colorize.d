@@ -97,7 +97,7 @@ unittest
 }
 
 string colorHelper(T)(const string str, const T t=T.init)
-if(is(T : fg) || is(T : bg) || is(T : mode))
+  if(is(T : fg) || is(T : bg) || is(T : mode))
 {
   return format("\033[%dm%s\033[0m", t, str);
 }
