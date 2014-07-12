@@ -96,17 +96,15 @@ unittest
   assert(ret == "\033[5;31;44mThis is red on blue blinking\033[0m");
 }
 
-private template colorHelper(T)
+string colorHelper(T)(const string str, const T t=T.init)
+if(is(T : fg) || is(T : bg) || is(T : mode))
 {
-  string fn(const string str, const T t=T.init)
-  {
-    return format("\033[%dm%s\033[0m", t, str);
-  }
+  return format("\033[%dm%s\033[0m", t, str);
 }
 
-alias colorHelper!bg.fn background;
-alias colorHelper!fg.fn foreground;
-alias colorHelper!mode.fn style;
+alias colorHelper!bg background;
+alias colorHelper!fg foreground;
+alias colorHelper!mode style;
 
 unittest
 {
