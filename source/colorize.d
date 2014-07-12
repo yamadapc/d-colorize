@@ -7,53 +7,34 @@
 
 import std.string : format;
 
-// Foreground colors
-static enum fg : int
+private template color(int offset)
 {
-  init = 39,
+  static enum type : int
+  {
+    init = 39 + offset,
 
-  black   = 30,
-  red     = 31,
-  green   = 32,
-  yellow  = 33,
-  blue    = 34,
-  magenta = 35,
-  cyan    = 36,
-  white   = 37,
+    black   = 30 + offset,
+    red     = 31 + offset,
+    green   = 32 + offset,
+    yellow  = 33 + offset,
+    blue    = 34 + offset,
+    magenta = 35 + offset,
+    cyan    = 36 + offset,
+    white   = 37 + offset,
 
-  light_black   = 90,
-  light_red     = 91,
-  light_green   = 92,
-  light_yellow  = 93,
-  light_blue    = 94,
-  light_magenta = 95,
-  light_cyan    = 96,
-  light_white   = 97
+    light_black   = 90 + offset,
+    light_red     = 91 + offset,
+    light_green   = 92 + offset,
+    light_yellow  = 93 + offset,
+    light_blue    = 94 + offset,
+    light_magenta = 95 + offset,
+    light_cyan    = 96 + offset,
+    light_white   = 97 + offset
+  }
 }
 
-// Background colors
-static enum bg : int
-{
-  init = 49,
-
-  black   = 40,
-  red     = 41,
-  green   = 42,
-  yellow  = 43,
-  blue    = 44,
-  magenta = 45,
-  cyan    = 46,
-  white   = 47,
-
-  light_black   = 100,
-  light_red     = 101,
-  light_green   = 102,
-  light_yellow  = 103,
-  light_blue    = 104,
-  light_magenta = 105,
-  light_cyan    = 106,
-  light_white   = 107
-}
+alias color!0 .type fg;
+alias color!10 .type bg;
 
 // Text modes
 static enum mode : int
@@ -115,20 +96,17 @@ unittest
   assert(ret == "\033[5;31;44mThis is red on blue blinking\033[0m");
 }
 
-string background(const string str, const bg b=bg.init)
+private template colorHelper(T)
 {
-  return format("\033[%dm%s\033[0m", b, str);
+  string fn(const string str, const T t=T.init)
+  {
+    return format("\033[%dm%s\033[0m", t, str);
+  }
 }
 
-string foreground(const string str, const fg c=fg.init)
-{
-  return format("\033[%dm%s\033[0m", c, str);
-}
-
-string style(const string str, const mode m=mode.init)
-{
-  return format("\033[%dm%s\033[0m", m, str);
-}
+alias colorHelper!bg.fn background;
+alias colorHelper!fg.fn foreground;
+alias colorHelper!mode.fn style;
 
 unittest
 {
