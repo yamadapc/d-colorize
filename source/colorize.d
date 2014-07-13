@@ -2,7 +2,7 @@
  * Authors: Pedro Tacla Yamada
  * Date: June 9, 2014
  * License: Licensed under the MIT license. See LICENSE for more information
- * Version: 0.0.2
+ * Version: 0.1.0
  */
 
 import std.string : format;
