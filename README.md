@@ -24,7 +24,17 @@ void main()
 }
 ```
 
-#### `colorize(string str, fg c, bg b=bg.init, mode m=mode.init)`
+- - -
+
+## Setting background, foreground and text modes:
+```d
+string colorize(
+  const string str,
+  const fg c,
+  const bg b=bg.init,
+  const mode m=mode.init
+) pure;
+```
 
 Wraps a string around color escape sequences.
 
@@ -34,11 +44,71 @@ Wraps a string around color escape sequences.
 * b   = The background color (see the bg enum type)
 * m   = The text mode        (see the mode enum type)
 
-## Example
+### Example
 
 ```d
 colorize("This is red over green blinking", fg.blue, bg.green, mode.blink)
 ```
+
+- - -
+
+## Setting background colors:
+```d
+string colorize(const string str, const bg b) pure; // alias to background
+```
+
+Wraps a string around a background color escape sequence.
+
+### Params
+* str = The string to wrap with background color `b`
+* b   = The background color (see the bg enum type)
+
+## Example
+```d
+colorize("This has a blue background", bg.blue);
+background("This has a red background", bg.red);
+```
+
+- - -
+
+## Setting text modes:
+```d
+string colorize(const string str, const mode m) pure; // alias to `style`
+```
+
+Wraps a string around a text mode.
+
+### Params
+* str = The string to wrap with style `m`
+* m   = The text mode (see the mode enum type)
+
+### Example
+```d
+colorize("This text is bold", mode.bold);
+style("This text is blinking", mode.blink);
+```
+
+## Coloring with strings:
+```d
+string colorize(const string str, const string name) pure;
+```
+
+Wraps a string around the foreground color, background color or text style
+represented by the color `name`. Foreground colors are represented by their enum
+key (`"blue"` will be `34`, `"red"` `31`, and so on) and backgrounds/modes are
+prefixed with either `"bg_"` or `"mode_"` (thus, `"bg_black"` will be `40`,
+`"mode_bold"` `1` and so on).
+
+### Example
+```d
+colorize("This text is blue", "blue");
+"This is red over blue, blinking"
+  .colorize("red")
+  .colorize("bg_blue")
+  .colorize("mode_blue");
+```
+
+### Params
 
 ## Available colors and modes
 ### `fg` enum type (Foreground colors)
