@@ -13,7 +13,7 @@ version(Windows)
 
     // This is a state machine to enable terminal colors on Windows.
     // Parses and interpret ANSI/VT100 Terminal Control Escape Sequences.
-    // Only supports fg and bg colors.
+    // Only supports colour sequences, will output char incorrectly on invalid input.
     struct WinTermEmulation
     {
     public:
@@ -53,7 +53,7 @@ version(Windows)
                     if (d == '[')
                     {
                         _state = readingAttribute;
-                        _currentAttr = 0;
+                        _parsedAttr = 0;
                         return false;
                     }
                     break;
@@ -62,16 +62,18 @@ version(Windows)
                 case readingAttribute:
                     if (d >= '0' && d <= '9')
                     {
-                        _parsedAttr = _parsedAttr * 10 + (_parsedAttr - '0');
+                        _parsedAttr = _parsedAttr * 10 + (d - '0');
                         return false;
                     }
                     else if (d == ';')
                     {
                         executeAttribute(_parsedAttr);
+                        _parsedAttr = 0;
                         return false;
                     }
                     else if (d == 'm')
                     {
+                        executeAttribute(_parsedAttr);
                         _state = State.initial;
                         return false;
                     }
@@ -95,49 +97,55 @@ version(Windows)
             readingAttribute
         }           
 
+        void setForegroundColor(WORD fgFlags) nothrow @nogc
+        {
+            _currentAttr = _currentAttr & ~(FOREGROUND_BLUE	| FOREGROUND_GREEN | FOREGROUND_RED	| FOREGROUND_INTENSITY);
+            _currentAttr = _currentAttr | fgFlags;
+            SetConsoleTextAttribute(_console, _currentAttr);
+        }
+
+        void setBackgroundColor(WORD bgFlags) nothrow @nogc
+        {
+            _currentAttr = _currentAttr & ~(BACKGROUND_BLUE	| BACKGROUND_GREEN | BACKGROUND_RED	| BACKGROUND_INTENSITY);
+            _currentAttr = _currentAttr | bgFlags;
+            SetConsoleTextAttribute(_console, _currentAttr);
+        }
+
         void executeAttribute(int attr) nothrow @nogc
         {
             switch (attr)
             {
-          /+      case 0:
-                    if (_savedInitialColor)
-                        SetConsoleTextAttribute(_console, consoleInfo.wAttributes);
+                case 0:
+                    // reset all attributes
+                    SetConsoleTextAttribute(_console, consoleInfo.wAttributes);
                     break;
 
                 default:
+                    if ( (30 <= attr && attr <= 37) || (90 <= attr && attr <= 97) )
+                    {
+                        WORD color = 0;
+                        if (90 <= attr && attr <= 97)
+                        {
+                            color = FOREGROUND_INTENSITY;
+                            attr -= 60;
+                        }
+                        attr -= 30;
+                        color |= (attr & 1 ? FOREGROUND_RED : 0) | (attr & 2 ? FOREGROUND_GREEN : 0)  | (attr & 4 ? FOREGROUND_BLUE : 0);
+                        setForegroundColor(color);
+                    }
 
-                    if (30 <= attr && attr <= 37)
-            }
-
-            0	Reset all attributes
-                1	Bright
-                2	Dim
-                4	Underscore	
-                5	Blink
-                7	Reverse
-                8	Hidden
-
-                Foreground Colours
-                30	Black
-                31	Red
-                32	Green
-                33	Yellow
-                34	Blue
-                35	Magenta
-                36	Cyan
-                37	White
-
-                Background Colours
-                40	Black
-                41	Red
-                42	Green
-                43	Yellow
-                44	Blue
-                45	Magenta
-                46	Cyan
-                47	White
-+/
-                default:
+                    if ( (40 <= attr && attr <= 47) || (100 <= attr && attr <= 107) )
+                    {
+                        WORD color = 0;
+                        if (100 <= attr && attr <= 107)
+                        {
+                            color = BACKGROUND_INTENSITY;
+                            attr -= 60;
+                        }
+                        attr -= 40;
+                        color |= (attr & 1 ? BACKGROUND_RED : 0) | (attr & 2 ? BACKGROUND_GREEN : 0)  | (attr & 4 ? BACKGROUND_BLUE : 0);
+                        setBackgroundColor(color);
+                    }
             }
         }
     }

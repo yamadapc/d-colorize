@@ -55,7 +55,10 @@ void cwrite(S...)(File f, S args)
     {
         auto winterm = WinTermEmulation();
         foreach(c ; s)
-            winterm.feed(c);
+        {
+            if (winterm.feed(c))
+                f.write(c);
+        }
     }
     else
     {
