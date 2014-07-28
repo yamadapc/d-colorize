@@ -25,7 +25,7 @@ void cwritef(T...)(T args)
 /// Coloured writefln.
 void cwritefln(T...)(T args)
 {
-    stdout.cwritefln(args);
+    stdout.cwritef(args, "\n");
 }
 
 /// Coloured writeln.
@@ -39,7 +39,7 @@ void cwriteln(T...)(T args)
 void cwritef(File f, Char, A...)(in Char[] fmt, A args)
 {
     auto s = format(fmt, args);
-    f.write(s); // TODO support colours
+    f.cwrite(s);
 }
 
 /// Coloured writef to a File.
@@ -51,6 +51,15 @@ void cwrite(S...)(File f, S args)
     foreach(arg; args)
         s ~= to!string(arg);
 
-    f.write(s);
+    version(Windows)
+    {
+        auto winterm = WinTermEmulation();
+        foreach(c ; s)
+            winterm.feed(c);
+    }
+    else
+    {
+        f.write(s);
+    }
 }
 
