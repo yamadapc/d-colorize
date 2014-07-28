@@ -7,4 +7,4 @@
 module colorize;
 
 public import colorize.colorize;
-public import colorize.winterm;
+public import colorize.cwrite;
