@@ -3,6 +3,8 @@
   "description": "A port of Ruby's colorize library to D.",
   "license": "MIT",
   "copyright": "Copyright © 2014, Pedro Tacla Yamada",
+  "importPaths": ["source"],
+  "sourcePaths": ["source"],
   "authors": [
     "Pedro Tacla Yamada"
   ]
