@@ -107,14 +107,14 @@ version(Windows)
 
         @nogc void setForegroundColor(WORD fgFlags) nothrow
         {
-            _currentAttr = _currentAttr & ~(FOREGROUND_BLUE	| FOREGROUND_GREEN | FOREGROUND_RED	| FOREGROUND_INTENSITY);
+            _currentAttr = _currentAttr & ~(FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_INTENSITY);
             _currentAttr = _currentAttr | fgFlags;
             SetConsoleTextAttribute(_console, _currentAttr);
         }
 
         @nogc void setBackgroundColor(WORD bgFlags) nothrow
         {
-            _currentAttr = _currentAttr & ~(BACKGROUND_BLUE	| BACKGROUND_GREEN | BACKGROUND_RED	| BACKGROUND_INTENSITY);
+            _currentAttr = _currentAttr & ~(BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED | BACKGROUND_INTENSITY);
             _currentAttr = _currentAttr | bgFlags;
             SetConsoleTextAttribute(_console, _currentAttr);
         }
@@ -138,7 +138,7 @@ version(Windows)
                             attr -= 60;
                         }
                         attr -= 30;
-                        color |= (attr & 1 ? FOREGROUND_RED : 0) | (attr & 2 ? FOREGROUND_GREEN : 0)  | (attr & 4 ? FOREGROUND_BLUE : 0);
+                        color |= (attr & 1 ? FOREGROUND_RED : 0) | (attr & 2 ? FOREGROUND_GREEN : 0) | (attr & 4 ? FOREGROUND_BLUE : 0);
                         setForegroundColor(color);
                     }
 
@@ -151,7 +151,7 @@ version(Windows)
                             attr -= 60;
                         }
                         attr -= 40;
-                        color |= (attr & 1 ? BACKGROUND_RED : 0) | (attr & 2 ? BACKGROUND_GREEN : 0)  | (attr & 4 ? BACKGROUND_BLUE : 0);
+                        color |= (attr & 1 ? BACKGROUND_RED : 0) | (attr & 2 ? BACKGROUND_GREEN : 0) | (attr & 4 ? BACKGROUND_BLUE : 0);
                         setBackgroundColor(color);
                     }
             }
