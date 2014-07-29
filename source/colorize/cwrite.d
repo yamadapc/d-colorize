@@ -53,11 +53,24 @@ void cwrite(S...)(File f, S args)
 
     version(Windows)
     {
-        auto winterm = WinTermEmulation();
-        foreach(c ; s)
+        WinTermEmulation winterm;
+        winterm.initialize();
+        foreach(dchar c ; s)
         {
-            if (winterm.feed(c))
-                f.write(c);
+            auto charAction = winterm.feed(c);
+            final switch(charAction) with (WinTermEmulation.CharAction)
+            {
+                case drop:
+                    break;
+
+                case write:
+                    f.write(c);
+                    break;
+
+                case flush:
+                    f.flush();
+                    break;
+            }
         }
     }
     else

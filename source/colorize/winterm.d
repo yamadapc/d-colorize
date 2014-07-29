@@ -17,7 +17,7 @@ version(Windows)
     struct WinTermEmulation
     {
     public:
-        this(bool workardound = true) nothrow @nogc
+        void initialize() nothrow @nogc
         {
             // saves console attributes
             _console = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -36,8 +36,16 @@ version(Windows)
             }
         }
 
-        // Eat one character and update color state accordingly. Return true if this character should be displayed.
-        bool feed(dchar d) nothrow @nogc
+        enum CharAction
+        {
+            write,
+            drop,
+            flush
+        }
+
+        // Eat one character and update color state accordingly.
+        // What to do with the fed character.
+        CharAction feed(dchar d) nothrow @nogc
         {
             final switch(_state) with (State)
             {
@@ -45,7 +53,7 @@ version(Windows)
                     if (d == '\x1B')
                     {
                         _state = escaped;
-                        return false;
+                        return CharAction.flush;
                     }
                     break;
 
@@ -54,7 +62,7 @@ version(Windows)
                     {
                         _state = readingAttribute;
                         _parsedAttr = 0;
-                        return false;
+                        return CharAction.drop;
                     }
                     break;
 
@@ -63,23 +71,23 @@ version(Windows)
                     if (d >= '0' && d <= '9')
                     {
                         _parsedAttr = _parsedAttr * 10 + (d - '0');
-                        return false;
+                        return CharAction.drop;
                     }
                     else if (d == ';')
                     {
                         executeAttribute(_parsedAttr);
                         _parsedAttr = 0;
-                        return false;
+                        return CharAction.drop;
                     }
                     else if (d == 'm')
                     {
                         executeAttribute(_parsedAttr);
                         _state = State.initial;
-                        return false;
+                        return CharAction.drop;
                     }
                     break;
             }
-            return true;
+            return CharAction.write;
         }
 
     private:
