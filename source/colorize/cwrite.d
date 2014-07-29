@@ -13,69 +13,62 @@ import colorize.winterm;
 /// Coloured write.
 void cwrite(T...)(T args) if (!is(T[0] : File))
 {
-    stdout.cwrite(args);
+  stdout.cwrite(args);
 }
 
 /// Coloured writef.
 void cwritef(T...)(T args)
 {
-    stdout.cwritef(args);
+  stdout.cwritef(args);
 }
 
 /// Coloured writefln.
 void cwritefln(T...)(T args)
 {
-    stdout.cwritef(args, "\n");
+  stdout.cwritef(args, "\n");
 }
 
 /// Coloured writeln.
 void cwriteln(T...)(T args)
 {
-    // Most general instance
-    stdout.cwrite(args, '\n');
+  // Most general instance
+  stdout.cwrite(args, '\n');
 }
 
 /// Coloured writef to a File.
 void cwritef(Char, A...)(File f, in Char[] fmt, A args)
 {
-    auto s = format(fmt, args);
-    f.cwrite(s);
+  auto s = format(fmt, args);
+  f.cwrite(s);
 }
 
 /// Coloured writef to a File.
 void cwrite(S...)(File f, S args)
 {
-    import std.conv : to;
+  import std.conv : to;
 
-    string s = "";
-    foreach(arg; args)
-        s ~= to!string(arg);
+  string s = "";
+  foreach(arg; args)
+    s ~= to!string(arg);
 
-    version(Windows)
+  version(Windows)
+  {
+    WinTermEmulation winterm;
+    winterm.initialize();
+    foreach(dchar c ; s)
     {
-        WinTermEmulation winterm;
-        winterm.initialize();
-        foreach(dchar c ; s)
-        {
-            auto charAction = winterm.feed(c);
-            final switch(charAction) with (WinTermEmulation.CharAction)
-            {
-                case drop:
-                    break;
-
-                case write:
-                    f.write(c);
-                    break;
-
-                case flush:
-                    f.flush();
-                    break;
-            }
-        }
+      auto charAction = winterm.feed(c);
+      final switch(charAction) with (WinTermEmulation.CharAction)
+      {
+        case drop: break;
+        case write: f.write(c); break;
+        case flush: f.flush(); break;
+      }
     }
-    else
-    {
-        f.write(s);
-    }
+  }
+  else
+  {
+    f.write(s);
+  }
 }
 
