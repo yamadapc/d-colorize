@@ -6,6 +6,7 @@
   "importPaths": ["source"],
   "sourcePaths": ["source"],
   "authors": [
-    "Pedro Tacla Yamada"
+    "Pedro Tacla Yamada",
+    "ponce"
   ]
 }
