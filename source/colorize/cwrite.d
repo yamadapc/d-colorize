@@ -36,7 +36,7 @@ void cwriteln(T...)(T args)
 }
 
 /// Coloured writef to a File.
-void cwritef(File f, Char, A...)(in Char[] fmt, A args)
+void cwritef(Char, A...)(File f, in Char[] fmt, A args)
 {
     auto s = format(fmt, args);
     f.cwrite(s);

@@ -17,7 +17,7 @@ version(Windows)
     struct WinTermEmulation
     {
     public:
-        void initialize() nothrow @nogc
+        @nogc void initialize() nothrow
         {
             // saves console attributes
             _console = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -26,7 +26,7 @@ version(Windows)
             _state = State.initial;
         }
 
-        ~this() nothrow @nogc
+        @nogc ~this() nothrow
         {
             // Restore initial text attributes on release
             if (_savedInitialColor)
@@ -45,7 +45,7 @@ version(Windows)
 
         // Eat one character and update color state accordingly.
         // What to do with the fed character.
-        CharAction feed(dchar d) nothrow @nogc
+        @nogc CharAction feed(dchar d) nothrow
         {
             final switch(_state) with (State)
             {
@@ -105,21 +105,21 @@ version(Windows)
             readingAttribute
         }           
 
-        void setForegroundColor(WORD fgFlags) nothrow @nogc
+        @nogc void setForegroundColor(WORD fgFlags) nothrow
         {
             _currentAttr = _currentAttr & ~(FOREGROUND_BLUE	| FOREGROUND_GREEN | FOREGROUND_RED	| FOREGROUND_INTENSITY);
             _currentAttr = _currentAttr | fgFlags;
             SetConsoleTextAttribute(_console, _currentAttr);
         }
 
-        void setBackgroundColor(WORD bgFlags) nothrow @nogc
+        @nogc void setBackgroundColor(WORD bgFlags) nothrow
         {
             _currentAttr = _currentAttr & ~(BACKGROUND_BLUE	| BACKGROUND_GREEN | BACKGROUND_RED	| BACKGROUND_INTENSITY);
             _currentAttr = _currentAttr | bgFlags;
             SetConsoleTextAttribute(_console, _currentAttr);
         }
 
-        void executeAttribute(int attr) nothrow @nogc
+        @nogc void executeAttribute(int attr) nothrow
         {
             switch (attr)
             {
