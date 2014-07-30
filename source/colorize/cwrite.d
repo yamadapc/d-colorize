@@ -17,15 +17,15 @@ void cwrite(T...)(T args) if (!is(T[0] : File))
 }
 
 /// Coloured writef.
-void cwritef(T...)(T args)
+void cwritef(Char, T...)(in Char[] fmt, T args) if (!is(T[0] : File))
 {
-  stdout.cwritef(args);
+  stdout.cwritef(fmt, args);
 }
 
 /// Coloured writefln.
-void cwritefln(T...)(T args)
+void cwritefln(Char, T...)(in Char[] fmt, T args)
 {
-  stdout.cwritef(args, "\n");
+  stdout.cwritef(fmt ~ "\n", args);
 }
 
 /// Coloured writeln.
@@ -38,6 +38,7 @@ void cwriteln(T...)(T args)
 /// Coloured writef to a File.
 void cwritef(Char, A...)(File f, in Char[] fmt, A args)
 {
+  import std.string : format;
   auto s = format(fmt, args);
   f.cwrite(s);
 }
@@ -71,3 +72,4 @@ void cwrite(S...)(File f, S args)
     f.write(s);
   }
 }
+
