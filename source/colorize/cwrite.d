@@ -71,4 +71,3 @@ void cwrite(S...)(File f, S args)
     f.write(s);
   }
 }
-

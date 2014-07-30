@@ -55,7 +55,7 @@ version(Windows)
             return CharAction.flush;
           }
           break;
-  
+
         case escaped:
           if (d == '[')
           {
@@ -64,8 +64,8 @@ version(Windows)
             return CharAction.drop;
           }
           break;
-  
-  
+
+
         case readingAttribute:
           if (d >= '0' && d <= '9')
           {
@@ -157,6 +157,3 @@ version(Windows)
     }
   }
 }
-
-
-
