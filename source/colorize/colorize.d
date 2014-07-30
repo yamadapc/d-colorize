@@ -4,6 +4,7 @@
  * License: Licensed under the MIT license. See LICENSE for more information
  * Version: 0.1.0
  */
+module colorize.colorize;
 
 import std.string : format;
 
