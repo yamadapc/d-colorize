@@ -16,7 +16,8 @@ This package is registered in the dub registry as
 ## Usage
 ```d
 import std.stdio;
-import colorize : colorize, fg;
+import colorize : fg;
+import colorize.colorize : colorize;
 
 void main()
 {
