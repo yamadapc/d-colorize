@@ -15,12 +15,14 @@ This package is registered in the dub registry as
 
 ## Usage
 ```d
-import std.stdio;
-import colorize : fg, color;
+import colorize : fg, color, cwriteln, cwritefln;
 
 void main()
 {
-  writeln("This is blue".color(fg.blue));
+  cwriteln("This is blue".color(fg.blue));
+
+  auto c = "red";
+  cwritefln("This is %s".color(c), c);
 }
 ```
 
