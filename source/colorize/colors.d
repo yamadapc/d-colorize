@@ -4,11 +4,11 @@
  * License: Licensed under the MIT license. See LICENSE for more information
  * Version: 0.1.0
  */
-module colorize.colorize;
+module colorize.colors;
 
 import std.string : format;
 
-private template color(int offset)
+private template color_type(int offset)
 {
   static enum type : int
   {
@@ -34,8 +34,8 @@ private template color(int offset)
   }
 }
 
-alias color!0 .type fg;
-alias color!10 .type bg;
+alias color_type!0 .type fg;
+alias color_type!10 .type bg;
 
 // Text modes
 static enum mode : int
@@ -58,14 +58,14 @@ static enum mode : int
  *   m   = The text mode        (see the mode enum type)
  * Example:
  * ---
- * writeln("This is blue".colorize(fg.blue));
+ * writeln("This is blue".color(fg.blue));
  * writeln(
- *   colorize("This is red over green blinking", fg.blue, bg.green, mode.blink)
+ *   color("This is red over green blinking", fg.blue, bg.green, mode.blink)
  * );
  * ---
  */
 
-string colorize(
+string color(
   const string str,
   const fg c=fg.init,
   const bg b=bg.init,
@@ -80,23 +80,23 @@ unittest
   import std.stdio;
   string ret;
 
-  ret = "This is yellow".colorize(fg.yellow);
+  ret = "This is yellow".color(fg.yellow);
   writeln(ret);
   assert(ret == "\033[33mThis is yellow\033[0m");
 
-  ret = "This is light green".colorize(fg.light_green);
+  ret = "This is light green".color(fg.light_green);
   writeln(ret);
   assert(ret == "\033[92mThis is light green\033[0m");
 
-  ret = "This is light blue with red background".colorize(fg.light_blue, bg.red);
+  ret = "This is light blue with red background".color(fg.light_blue, bg.red);
   writeln(ret);
   assert(ret == "\033[0;94;41mThis is light blue with red background\033[0m");
 
-  ret = "This is red on blue blinking".colorize(fg.red, bg.blue, mode.blink);
+  ret = "This is red on blue blinking".color(fg.red, bg.blue, mode.blink);
   writeln(ret);
   assert(ret == "\033[5;31;44mThis is red on blue blinking\033[0m");
 
-  ret = colorize("This is magenta", "magenta");
+  ret = color("This is magenta", "magenta");
   writeln(ret);
   assert(ret == "\033[35mThis is magenta\033[0m");
 }
@@ -173,10 +173,10 @@ alias colorHelper!bg background;
 alias colorHelper!fg foreground;
 alias colorHelper!mode style;
 
-alias background colorize;
-alias foreground colorize;
-alias style colorize;
-alias colorHelper colorize;
+alias background color;
+alias foreground color;
+alias style color;
+alias colorHelper color;
 
 unittest
 {

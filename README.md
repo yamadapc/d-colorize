@@ -16,12 +16,11 @@ This package is registered in the dub registry as
 ## Usage
 ```d
 import std.stdio;
-import colorize : fg;
-import colorize.colorize : colorize;
+import colorize : fg, color;
 
 void main()
 {
-  writeln("This is blue".colorize(fg.blue));
+  writeln("This is blue".color(fg.blue));
 }
 ```
 
@@ -29,7 +28,7 @@ void main()
 
 ## Setting background, foreground and text modes:
 ```d
-string colorize(
+string color(
   const string str,
   const fg c,
   const bg b=bg.init,
@@ -48,14 +47,14 @@ Wraps a string around color escape sequences.
 ### Example
 
 ```d
-colorize("This is red over green blinking", fg.blue, bg.green, mode.blink)
+color("This is red over green blinking", fg.blue, bg.green, mode.blink)
 ```
 
 - - -
 
 ## Setting background colors:
 ```d
-string colorize(const string str, const bg b) pure; // alias to background
+string color(const string str, const bg b) pure; // alias to background
 ```
 
 Wraps a string around a background color escape sequence.
@@ -66,7 +65,7 @@ Wraps a string around a background color escape sequence.
 
 ## Example
 ```d
-colorize("This has a blue background", bg.blue);
+color("This has a blue background", bg.blue);
 background("This has a red background", bg.red);
 ```
 
@@ -74,7 +73,7 @@ background("This has a red background", bg.red);
 
 ## Setting text modes:
 ```d
-string colorize(const string str, const mode m) pure; // alias to `style`
+string color(const string str, const mode m) pure; // alias to `style`
 ```
 
 Wraps a string around a text mode.
@@ -85,13 +84,13 @@ Wraps a string around a text mode.
 
 ### Example
 ```d
-colorize("This text is bold", mode.bold);
+color("This text is bold", mode.bold);
 style("This text is blinking", mode.blink);
 ```
 
 ## Coloring with strings:
 ```d
-string colorize(const string str, const string name) pure;
+string color(const string str, const string name) pure;
 ```
 
 Wraps a string around the foreground color, background color or text style
@@ -102,11 +101,11 @@ prefixed with either `"bg_"` or `"mode_"` (thus, `"bg_black"` will be `40`,
 
 ### Example
 ```d
-colorize("This text is blue", "blue");
+color("This text is blue", "blue");
 "This is red over blue, blinking"
-  .colorize("red")
-  .colorize("bg_blue")
-  .colorize("mode_blue");
+  .color("red")
+  .color("bg_blue")
+  .color("mode_blue");
 ```
 
 ### Params

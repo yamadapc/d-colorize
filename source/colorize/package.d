@@ -6,5 +6,5 @@
  */
 module colorize;
 
-public import colorize.colorize;
+public import colorize.colors;
 public import colorize.cwrite;
