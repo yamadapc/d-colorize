@@ -26,7 +26,45 @@ void main()
   cwritefln("This is %s".color(c), c);
 }
 ```
+- - -
 
+## Supporting cross-platform color printing
+Colorize exports functions for wrapping strings around ANSI color escape
+sequences. Simply printing these strings should work fine for any UNIX system.
+However, for "colorized" printing to work on Windows, it's necessary to use one
+of the exported helper printing functions, provided by
+[p0nce](https://github.com/p0nce), also in this module.
+
+Colorizing output works by using the `color` API described below and for Windows
+compatibility, we provide functions which parse the escape sequences and call
+appropriate system-level. On all platforms other than Windows, these functions
+should work just as their `std.stdio` counterparts.
+
+These are:
+### cwrite
+```d
+void cwrite(T...)(T args) if (!is(T[0] : File))
+```
+#### With an overloaded version for File output:
+```d
+void cwrite(S...)(File f, S args)
+```
+###  cwritef
+```d
+void cwritef(Char, T...)(in Char[] fmt, T args) if (!is(T[0] : File))
+```
+#### With an overloaded version for File output:
+```d
+void cwritef(Char, A...)(File f, in Char[] fmt, A args)
+```
+### cwriteln
+```d
+void cwriteln(T...)(T args)
+```
+### cwritefln
+```d
+void cwritefln(Char, T...)(in Char[] fmt, T args)
+```
 - - -
 
 ## Setting background, foreground and text modes:
