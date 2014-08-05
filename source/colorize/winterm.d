@@ -11,7 +11,7 @@ version(Windows)
   import core.sys.windows.windows;
 
   // Patch for DMD 2.065 compatibility
-  static if( __VERSION__ < 2066 ) enum nogc = 1;
+  static if( __VERSION__ < 2066 ) private enum nogc = 1;
 
   // This is a state machine to enable terminal colors on Windows.
   // Parses and interpret ANSI/VT100 Terminal Control Escape Sequences.
