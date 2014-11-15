@@ -169,6 +169,18 @@ string colorHelper(T)(const string str, const T t=T.init) pure
   return format("\033[%dm%s\033[0m", t, str);
 }
 
+// Custom colors
+string customForeground(const string str, float r, float g, float b)
+{
+  uint red   = cast(uint)(r * 5 + 0.5);
+  uint green = cast(uint)(g * 5 + 0.5);
+  uint blue  = cast(uint)(b * 5 + 0.5);
+
+  return format("\033[38;5;%dm%s\033[0m",
+                16 + (red * 36 + green * 6 + blue),
+                str);
+}
+
 alias colorHelper!bg background;
 alias colorHelper!fg foreground;
 alias colorHelper!mode style;
@@ -190,4 +202,7 @@ unittest
 
   cwriteln(ret);
   assert(ret == "\033[5m\033[44m\033[31mThis is red on blue blinking\033[0m\033[0m\033[0m");
+
+  ret = "This is a custom color";
+  cwriteln(ret.customForeground(1, 0.1, 0.3));
 }
